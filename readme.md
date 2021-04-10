@@ -1,7 +1,7 @@
 # Личный проект «Типотека» [![Build status][travis-image]][travis-url]
 
 * Студент: [Элла Сидорова](https://up.htmlacademy.ru/nodejs/3/user/147338).
-* Наставник: `Неизвестно`.
+* Наставник: [mr.Nobody]().
 
 ---
 
