@@ -28,5 +28,5 @@ const createDate = (minDate, currentDate) => {
 module.exports = {
   getRandomInt,
   shuffle,
-  createDate,
+  createDate
 };
