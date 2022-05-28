@@ -1,5 +1,6 @@
 'use strict';
 const fs = require(`fs`);
+const chalk = require(`chalk`);
 
 const {
   getRandomInt,
@@ -30,7 +31,7 @@ const createPublicationObject = () => {
 const generatePublications = (count = null) => {
   let publicationsCount = Number.parseInt(count, 10) || ArrayElements.MIN;
   if (publicationsCount > ArrayElements.MAX) {
-    console.error(`Не больше 1000 публикаций`);
+    console.error(chalk.red(`Не больше 1000 публикаций`));
     process.exit(ExitCode.ERROR);
   }
   if (publicationsCount === 0) {
@@ -39,11 +40,11 @@ const generatePublications = (count = null) => {
   const data = JSON.stringify(Array.from({length: publicationsCount}, createPublicationObject));
   fs.writeFile(FILE_NAME, data, (err) => {
     if (err) {
-      console.error(`Can't write data to file...`);
+      console.error(chalk.red(`Can't write data to file...`));
       process.exit(ExitCode.ERROR);
     }
 
-    console.info(`Operation success. File created.`);
+    console.info(chalk.green(`Operation success. File created.`));
     process.exit(ExitCode.SUCCESS);
   });
 };
