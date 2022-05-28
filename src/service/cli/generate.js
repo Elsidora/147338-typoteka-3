@@ -1,6 +1,6 @@
 'use strict';
-const fs = require(`fs`);
-const chalk = require(`chalk`);
+const fs = require(`fs`).promises;
+const {red, green} = require(`chalk`);
 
 const {
   getRandomInt,
@@ -27,7 +27,7 @@ const createPublicationObject = () => {
     сategory: shuffle(CATEGORIES).splice(0, getRandomInt(1, CATEGORIES.length - 1)),
   };
 };
-
+/*
 const generatePublications = (count = null) => {
   let publicationsCount = Number.parseInt(count, 10) || ArrayElements.MIN;
   if (publicationsCount > ArrayElements.MAX) {
@@ -38,6 +38,16 @@ const generatePublications = (count = null) => {
     publicationsCount = ArrayElements.MIN;
   }
   const data = JSON.stringify(Array.from({length: publicationsCount}, createPublicationObject));
+
+  try {
+    await fs.writeFile(FILE_NAME, data);
+    console.log(chalk.green(`Operation success. File created.`));
+    process.exit(ExitCode.SUCCESS);
+  } catch (err) {
+    console.error(chalk.red(`Can't write data to file...`));
+    process.exit(ExitCode.ERROR);
+  }
+  
   fs.writeFile(FILE_NAME, data, (err) => {
     if (err) {
       console.error(chalk.red(`Can't write data to file...`));
@@ -47,11 +57,31 @@ const generatePublications = (count = null) => {
     console.info(chalk.green(`Operation success. File created.`));
     process.exit(ExitCode.SUCCESS);
   });
+  
 };
+*/
 
 module.exports = {
   name: `--generate`,
-  init(count) {
-    generatePublications(count);
+  async init(count) {
+    let publicationsCount = Number.parseInt(count, 10) || ArrayElements.MIN;
+    if (publicationsCount > ArrayElements.MAX) {
+      console.error(red.bold(`Не больше ${ArrayElements.MAX} публикаций`));
+      process.exit(ExitCode.ERROR);
+    }
+    if (publicationsCount === 0) {
+      publicationsCount = ArrayElements.MIN;
+    }
+    const data = JSON.stringify(Array.from({length: publicationsCount}, createPublicationObject));
+
+    try {
+      await fs.writeFile(FILE_NAME, data);
+      console.log(green.bold(`Operation success. File created.`));
+      process.exit(ExitCode.SUCCESS);
+    } catch (err) {
+      console.error(red.bold(`Can't write data to file...`));
+      process.exit(ExitCode.ERROR);
+    }
+    // generatePublications(count);
   }
 };
