@@ -1,5 +1,6 @@
 'use strict';
-const fs = require(`fs`);
+const {promises} = require(`fs`);
+const {red, green} = require(`chalk`);
 
 const {
   getRandomInt,
@@ -27,25 +28,25 @@ const createPublicationObject = () => {
   };
 };
 
-const generatePublications = (count = null) => {
+const generatePublications = async (count = null) => {
   let publicationsCount = Number.parseInt(count, 10) || ArrayElements.MIN;
   if (publicationsCount > ArrayElements.MAX) {
-    console.error(`Не больше 1000 публикаций`);
+    console.error(red.bold(`Не больше ${ArrayElements.MAX} публикаций`));
     process.exit(ExitCode.ERROR);
   }
   if (publicationsCount === 0) {
     publicationsCount = ArrayElements.MIN;
   }
   const data = JSON.stringify(Array.from({length: publicationsCount}, createPublicationObject));
-  fs.writeFile(FILE_NAME, data, (err) => {
-    if (err) {
-      console.error(`Can't write data to file...`);
-      process.exit(ExitCode.ERROR);
-    }
 
-    console.info(`Operation success. File created.`);
+  try {
+    await promises.writeFile(FILE_NAME, data);
+    console.log(green.bold(`Operation success. File created.`));
     process.exit(ExitCode.SUCCESS);
-  });
+  } catch (err) {
+    console.error(red.bold(`Can't write data to file...`));
+    process.exit(ExitCode.ERROR);
+  }
 };
 
 module.exports = {
