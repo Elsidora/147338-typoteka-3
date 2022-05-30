@@ -28,26 +28,30 @@ const createPublicationObject = () => {
   };
 };
 
+const generatePublications = async (count = null) => {
+  let publicationsCount = Number.parseInt(count, 10) || ArrayElements.MIN;
+  if (publicationsCount > ArrayElements.MAX) {
+    console.error(red.bold(`Не больше ${ArrayElements.MAX} публикаций`));
+    process.exit(ExitCode.ERROR);
+  }
+  if (publicationsCount === 0) {
+    publicationsCount = ArrayElements.MIN;
+  }
+  const data = JSON.stringify(Array.from({length: publicationsCount}, createPublicationObject));
+
+  try {
+    await promises.writeFile(FILE_NAME, data);
+    console.log(green.bold(`Operation success. File created.`));
+    process.exit(ExitCode.SUCCESS);
+  } catch (err) {
+    console.error(red.bold(`Can't write data to file...`));
+    process.exit(ExitCode.ERROR);
+  }
+};
+
 module.exports = {
   name: `--generate`,
-  async init(count) {
-    let publicationsCount = Number.parseInt(count, 10) || ArrayElements.MIN;
-    if (publicationsCount > ArrayElements.MAX) {
-      console.error(red.bold(`Не больше ${ArrayElements.MAX} публикаций`));
-      process.exit(ExitCode.ERROR);
-    }
-    if (publicationsCount === 0) {
-      publicationsCount = ArrayElements.MIN;
-    }
-    const data = JSON.stringify(Array.from({length: publicationsCount}, createPublicationObject));
-
-    try {
-      await promises.writeFile(FILE_NAME, data);
-      console.log(green.bold(`Operation success. File created.`));
-      process.exit(ExitCode.SUCCESS);
-    } catch (err) {
-      console.error(red.bold(`Can't write data to file...`));
-      process.exit(ExitCode.ERROR);
-    }
+  init(count) {
+    generatePublications(count);
   }
 };
