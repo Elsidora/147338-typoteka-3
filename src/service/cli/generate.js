@@ -10,21 +10,32 @@ const {
 
 const {
   FILE_NAME,
-  TITLES,
-  SENTENCES,
-  CATEGORIES,
   ArrayElements,
   THREE_MONTH_MS,
   ExitCode,
 } = require(`../../constants`);
 
-const createPublicationObject = () => {
+const FILE_SENTENCES_PATH = `./data/sentences.txt`;
+const FILE_TITLES_PATH = `./data/titles.txt`;
+const FILE_CATEGORIES_PATH = `./data/categories.txt`;
+
+const readContent = async (filePath) => {
+  try {
+    const content = await promises.readFile(filePath, `utf8`);
+    return content.trim().split(`\n`);
+  } catch (err) {
+    console.error(red(err));
+    return [];
+  }
+};
+
+const createPublicationObject = (titles, categories, sentences) => {
   return {
-    title: TITLES[getRandomInt(0, TITLES.length - 1)],
+    title: titles[getRandomInt(0, titles.length - 1)],
     createdDate: createDate(Date.now() - THREE_MONTH_MS, Date.now()),
-    announce: shuffle(SENTENCES).splice(0, getRandomInt(ArrayElements.MIN, ArrayElements.ANNOUNCE_MAX_COUNT)).join(` `),
-    fullText: shuffle(SENTENCES).splice(getRandomInt(0, SENTENCES.length - 1), getRandomInt(1, SENTENCES.length - 1)).join(` `),
-    сategory: shuffle(CATEGORIES).splice(0, getRandomInt(1, CATEGORIES.length - 1)),
+    announce: shuffle(sentences).splice(0, getRandomInt(ArrayElements.MIN, ArrayElements.ANNOUNCE_MAX_COUNT)).join(` `),
+    fullText: shuffle(sentences).splice(getRandomInt(0, sentences.length - 1), getRandomInt(1, sentences.length - 1)).join(` `),
+    сategory: shuffle(categories).splice(0, getRandomInt(1, categories.length - 1)),
   };
 };
 
@@ -37,7 +48,12 @@ const generatePublications = async (count = null) => {
   if (publicationsCount === 0) {
     publicationsCount = ArrayElements.MIN;
   }
-  const data = JSON.stringify(Array.from({length: publicationsCount}, createPublicationObject));
+  const [titles, categories, sentences] =
+    await Promise.all([readContent(FILE_TITLES_PATH), readContent(FILE_CATEGORIES_PATH), readContent(FILE_SENTENCES_PATH)])
+      .catch((err) => {
+        console.log(err);
+      });
+  const data = JSON.stringify(Array.from({length: publicationsCount}, createPublicationObject.bind(null, titles, categories, sentences)));
 
   try {
     await promises.writeFile(FILE_NAME, data);
