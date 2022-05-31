@@ -31,7 +31,6 @@ const readContent = async (filePath) => {
 
 const createPublicationObject = (titles, categories, sentences) => {
   return {
-    title: TITLES[getRandomInt(0, TITLES.length - 1)],
     title: titles[getRandomInt(0, titles.length - 1)],
     createdDate: createDate(Date.now() - THREE_MONTH_MS, Date.now()),
     announce: shuffle(sentences).splice(0, getRandomInt(ArrayElements.MIN, ArrayElements.ANNOUNCE_MAX_COUNT)).join(` `),
