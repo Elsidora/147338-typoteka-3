@@ -1,6 +1,6 @@
 'use strict';
 const FILE_NAME = `mocks.json`;
-const DEFAULT_PORT = 3003;
+const DEFAULT_PORT = 3000;
 const THREE_MONTH_MS = 86400000 * 7 * 4 * 3;
 
 const ArrayElements = {
