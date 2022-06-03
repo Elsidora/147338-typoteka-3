@@ -3,7 +3,8 @@
 const help = require(`./cli/help`);
 const version = require(`./cli/version`);
 const generate = require(`./cli/generate`);
-const [, , option, count] = process.argv;
+const server = require(`./cli/server`);
+const [, , option, number] = process.argv;
 
 switch (option) {
   case `--help`:
@@ -13,7 +14,10 @@ switch (option) {
     version.init();
     break;
   case `--generate`:
-    generate.init(count);
+    generate.init(number);
+    break;
+  case `--server`:
+    server.init(number);
     break;
   default:
     help.init();
