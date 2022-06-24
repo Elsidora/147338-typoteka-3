@@ -3,6 +3,6 @@
 const {Router} = require(`express`);
 const searchRouter = new Router();
 
-searchRouter.get(`/`, (req, res) => res.render(`search`));
+searchRouter.get(`/`, (req, res) => res.render(`views/main/search`));
 
 module.exports = searchRouter;
