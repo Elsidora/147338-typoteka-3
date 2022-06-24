@@ -18,6 +18,7 @@ app.use(express.static(path.resolve(__dirname, 'public')));
 app.set('views', path.resolve(__dirname, './templates'));
 
 app.set(`view engine`, `pug`);
+app.locals.basedir = app.get(`views`);
 
 app.use(`/`, mainRoutes);
 app.use(`/register`, registerRoutes);
@@ -26,9 +27,9 @@ app.use(`/search`, searchRoutes);
 app.use(`/articles`, articlesRoutes);
 app.use(`/my`, myRoutes);
 
-app.use((req, res) => res.status(HttpCode.NOT_FOUND).render(`errors/404`));
+app.use((req, res) => res.status(HttpCode.NOT_FOUND).render(`views/errors/404`));
 
-app.use((req, res) => res.status(HttpCode.INTERNAL_SERVER_ERROR).render(`errors/500`));
+app.use((req, res) => res.status(HttpCode.INTERNAL_SERVER_ERROR).render(`views/errors/500`));
 
 
 app.listen(DEFAULT_PORT);

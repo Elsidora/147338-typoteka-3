@@ -5,7 +5,7 @@ const mainRouter = new Router();
 
 
 mainRouter.get(`/`, (req, res) => {
-  res.render(`index`);
+  res.render(`views/main/index`);
 });
 
 module.exports = mainRouter;
