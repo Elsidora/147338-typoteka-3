@@ -1,6 +1,7 @@
 'use strict';
 const {promises} = require(`fs`);
 const {red, green} = require(`chalk`);
+const {nanoid} = require(`nanoid`);
 
 const {
   getRandomInt,
@@ -13,6 +14,7 @@ const {
   ArrayElements,
   THREE_MONTH_MS,
   ExitCode,
+  MAX_ID_LENGTH,
 } = require(`../../constants`);
 
 const FILE_SENTENCES_PATH = `./data/sentences.txt`;
@@ -31,6 +33,7 @@ const readContent = async (filePath) => {
 
 const createPublicationObject = (titles, categories, sentences) => {
   return {
+    id: nanoid(MAX_ID_LENGTH),
     title: titles[getRandomInt(0, titles.length - 1)],
     createdDate: createDate(Date.now() - THREE_MONTH_MS, Date.now()),
     announce: shuffle(sentences).splice(0, getRandomInt(ArrayElements.MIN, ArrayElements.ANNOUNCE_MAX_COUNT)).join(` `),

@@ -2,6 +2,7 @@
 const FILE_NAME = `mocks.json`;
 const DEFAULT_PORT = 3000;
 const THREE_MONTH_MS = 86400000 * 7 * 4 * 3;
+const MAX_ID_LENGTH = 6;
 
 const ArrayElements = {
   MIN: 1,
@@ -27,6 +28,7 @@ module.exports = {
   DEFAULT_PORT,
   ArrayElements,
   THREE_MONTH_MS,
+  MAX_ID_LENGTH,
   ExitCode,
   HttpCode,
 };
